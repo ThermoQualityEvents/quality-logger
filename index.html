@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quality Events Log</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Quality Events Log</h1>
+    <a href="{{ url_for('add_event') }}">+ Log New Event</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Severity</th>
+            <th>Reporter</th>
+            <th>Status</th>
+        </tr>
+        {% for event in events %}
+        <tr>
+            <td>{{ event.id }}</td>
+            <td>{{ event.date.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ event.event_type }}</td>
+            <td>{{ event.description | truncate(100) }}</td>
+            <td>{{ event.severity or '-' }}</td>
+            <td>{{ event.reporter or '-' }}</td>
+            <td>{{ event.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
 
